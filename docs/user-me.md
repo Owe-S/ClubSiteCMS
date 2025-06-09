@@ -1,0 +1,1 @@
+# GET /api/user/me  Henter innlogget brukers profilinformasjon.  ## HTTP-metode GET  ## URL /api/user/me  ## Eksempelrespons ```json {   "id": 1,   "name": "Owe Stangeland",   "email": "owe.stangeland@gmail.com" } ``` 
