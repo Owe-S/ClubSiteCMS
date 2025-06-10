@@ -65,3 +65,4 @@ setTimeout(() => {
     console.log('Server stoppet automatisk');
   });
 }, 10000);
+// Dokumentasjonsupdate
