@@ -1,0 +1,17 @@
+{
+  "source": {
+    "include": ["index.js"], // Eller ["index.js", "routes"] hvis du velger Strategi 2
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  },
+  "opts": {
+    "destination": "./docs/api/",
+    "recurse": true,
+    "readme": "./README.md" // Valgfritt: Inkluder en hoved-README
+  }
+}
