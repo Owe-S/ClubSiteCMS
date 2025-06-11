@@ -46,3 +46,7 @@ jobs:
           git add docs
           git commit -m "Force update docs" --allow-empty
           git push -f origin HEAD:gh-pages
+
+      - name: Generate JSDoc
+        run: npx jsdoc -c jsdoc.json
+
