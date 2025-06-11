@@ -1,21 +1,27 @@
-name: Generate Documentation  
-on: [push]  
+name: Generate Documentation
+on: [push]
 
-jobs:  
-  docs:  
-    runs-on: ubuntu-latest  
-    steps:  
-    - uses: actions/checkout@v4  
-    - name: Setup Node  
-      uses: actions/setup-node@v4  
-      with:  
-        node-version: '20'  
-    - name: Install JSDoc  
-      run: npm install -g jsdoc  
-    - name: Generate Docs  
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install JSDoc
+      run: npm install -g jsdoc
+
+    - name: Generate Docs
       run: |
-            jsdoc index.js -d ./docs
-            mkdir -p ./docs/api
-            cp ./docs/index.html ./docs/api/index.html  
-    - name: List Generated Files  
-      run: ls -R ./docs  # Verifiser at filer er opprettet  
+        jsdoc index.js -d ./docs/api
+        echo "<!DOCTYPE html><html><head><meta http-equiv='refresh' content='0; url=./api/index.html'></head></html>" > ./docs/index.html
+
+    - name: Verify Files
+      run: |
+        ls -R ./docs
+        echo "Dokumentasjon generert til:"
+        find ./docs -type f
