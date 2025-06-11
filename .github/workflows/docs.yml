@@ -1,35 +1,36 @@
-name: Generate Documentation
+name: Debug Documentation Build
 on: [push]
 
 jobs:
-  docs:
+  debug-docs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+    - name: Debug Node.js Setup
+      run: |
+        echo "Node.js version: $(node -v)"
+        echo "npm version: $(npm -v)"
+        ls -la
 
-    - name: Install JSDoc
-      run: npm install -g jsdoc
+    - name: Install JSDoc with Debug
+      run: |
+        npm install -g jsdoc
+        echo "JSDoc version: $(jsdoc --version)"
 
-    - name: Generate Docs
+    - name: Generate Docs with Verbose Logging
       run: |
         mkdir -p ./docs/api
-        jsdoc index.js -d ./docs/api
-        echo "<!DOCTYPE html>
-        <html>
-        <head>
-          <title>ClubSiteCMS Docs</title>
-          <meta http-equiv='refresh' content='0; url=./api/index.html'>
-        </head>
-        <body>
-          Redirecting to documentation...
-        </body>
-        </html>" > ./docs/index.html
+        jsdoc index.js -d ./docs/api --verbose 2>&1 | tee jsdoc.log
+        echo "Generated files:"
+        find ./docs -type f
+        cat jsdoc.log
 
-    - name: Verify
+    - name: Force Push to gh-pages
+      if: always()
       run: |
-        ls -R ./docs
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add ./docs
+        git commit -m "Force update docs" || echo "No changes to commit"
+        git push origin HEAD:gh-pages --force
