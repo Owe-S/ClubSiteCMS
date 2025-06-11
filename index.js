@@ -7,7 +7,7 @@ import express from 'express';
 
 const app = express();
 app.use(express.json());
-
+// Tester at dette går greit
 /**
  * Henter nyheter
  * @name GetNews
