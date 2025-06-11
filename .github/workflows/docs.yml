@@ -1,36 +1,48 @@
 name: Debug Documentation Build
-on: [push]
+
+on:
+  push:
+    branches:
+      - main # Eller den grenen du jobber på
+  workflow_dispatch: # Tillater manuell kjøring
+
+permissions:
+  contents: write # Nødvendig for å pushe til gh-pages
 
 jobs:
   debug-docs:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Debug Node.js Setup
-      run: |
-        echo "Node.js version: $(node -v)"
-        echo "npm version: $(npm -v)"
-        ls -la
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Eller den versjonen du foretrekker
 
-    - name: Install JSDoc with Debug
-      run: |
-        npm install -g jsdoc
-        echo "JSDoc version: $(jsdoc --version)"
+      - name: Install JSDoc
+        run: npm install -g jsdoc
 
-    - name: Generate Docs with Verbose Logging
-      run: |
-        mkdir -p ./docs/api
-        jsdoc index.js -d ./docs/api --verbose 2>&1 | tee jsdoc.log
-        echo "Generated files:"
-        find ./docs -type f
-        cat jsdoc.log
+      - name: Generate Docs with Verbose Logging
+        run: |
+          mkdir -p ./docs/api
+          # Sørg for at index.js finnes, ellers vil jsdoc feile
+          # For testing, hvis index.js ikke er klar: touch index.js
+          if [ ! -f index.js ]; then echo "Creating dummy index.js for JSDoc" > index.js; fi
+          jsdoc index.js -d ./docs/api --verbose 2>&1 | tee jsdoc.log
+          echo "Generated files:"
+          find ./docs -type f
+          cat jsdoc.log
 
-    - name: Force Push to gh-pages
-      if: always()
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git add ./docs
-        git commit -m "Force update docs" || echo "No changes to commit"
-        git push origin HEAD:gh-pages --force
+      # Viktig nytt steg:
+      - name: Create .nojekyll file
+        run: touch ./docs/.nojekyll
+
+      - name: Force Push to gh-pages
+        run: |
+          git config --global user.name 'actions-user'
+          git config --global user.email 'actions-user@github.com'
+          git add docs
+          git commit -m "Force update docs" --allow-empty
+          git push -f origin HEAD:gh-pages
