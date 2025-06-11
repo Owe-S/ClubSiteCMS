@@ -17,11 +17,19 @@ jobs:
 
     - name: Generate Docs
       run: |
+        mkdir -p ./docs/api
         jsdoc index.js -d ./docs/api
-        echo "<!DOCTYPE html><html><head><meta http-equiv='refresh' content='0; url=./api/index.html'></head></html>" > ./docs/index.html
+        echo "<!DOCTYPE html>
+        <html>
+        <head>
+          <title>ClubSiteCMS Docs</title>
+          <meta http-equiv='refresh' content='0; url=./api/index.html'>
+        </head>
+        <body>
+          Redirecting to documentation...
+        </body>
+        </html>" > ./docs/index.html
 
-    - name: Verify Files
+    - name: Verify
       run: |
         ls -R ./docs
-        echo "Dokumentasjon generert til:"
-        find ./docs -type f
