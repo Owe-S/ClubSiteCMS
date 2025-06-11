@@ -3,50 +3,64 @@ name: Debug Documentation Build
 on:
   push:
     branches:
-      - main # Eller den grenen du jobber på
-  workflow_dispatch: # Tillater manuell kjøring
+      - main # Kjør kun når det pushes til main-grenen
+  workflow_dispatch: # Tillat manuell kjøring
 
 permissions:
   contents: write # Nødvendig for å pushe til gh-pages
 
 jobs:
-  debug-docs:
+  build-docs:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout main branch
         uses: actions/checkout@v4
+        with:
+          ref: main # Sørg for at vi sjekker ut main for å bygge dokumentasjon
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Eller den versjonen du foretrekker
+          node-version: '20' # Eller den Node.js-versjonen prosjektet ditt bruker
 
       - name: Install JSDoc
         run: npm install -g jsdoc
 
-      - name: Generate Docs with Verbose Logging
+      # STEG 1: Generer JSDoc med konfigurasjonsfilen
+      - name: Generate JSDoc Documentation
         run: |
-          mkdir -p ./docs/api
-          # Sørg for at index.js finnes, ellers vil jsdoc feile
-          # For testing, hvis index.js ikke er klar: touch index.js
-          if [ ! -f index.js ]; then echo "Creating dummy index.js for JSDoc" > index.js; fi
-          jsdoc index.js -d ./docs/api --verbose 2>&1 | tee jsdoc.log
-          echo "Generated files:"
-          find ./docs -type f
+          echo "Current directory:"
+          pwd
+          echo "Files in current directory:"
+          ls -la
+          echo "Ensuring index.js exists (for JSDoc input specified in jsdoc.json)..."
+          if [ ! -f index.js ]; then 
+            echo "WARNING: index.js not found. JSDoc might fail if it's the primary input."
+            # Du kan vurdere å lage en dummy-fil hvis JSDoc MÅ ha den og den mangler:
+            # echo "/** Placeholder */" > index.js
+          fi
+          echo "Running JSDoc with jsdoc.json..."
+          npx jsdoc -c jsdoc.json --verbose 2>&1 | tee jsdoc.log
+          echo "JSDoc command finished."
+          echo "Generated files in ./docs/api:"
+          find ./docs/api -type f # JSDoc outputter til ./docs/api/ som definert i jsdoc.json
+          echo "Contents of jsdoc.log:"
           cat jsdoc.log
 
-      # Viktig nytt steg:
-      - name: Create .nojekyll file
-        run: touch ./docs/.nojekyll
+      # STEG 2: Forbered filer for gh-pages (inkludert .nojekyll og landingssiden)
+      # Din landingsside (docs/index.html) og JSDoc-output (docs/api/*) er nå klare.
+      - name: Create .nojekyll file in docs directory
+        run: touch ./docs/.nojekyll # Denne skal ligge i roten av det som publiseres til Pages
 
-      - name: Force Push to gh-pages
-        run: |
-          git config --global user.name 'actions-user'
-          git config --global user.email 'actions-user@github.com'
-          git add docs
-          git commit -m "Force update docs" --allow-empty
-          git push -f origin HEAD:gh-pages
-
-      - name: Generate JSDoc
-        run: npx jsdoc -c jsdoc.json
-
+      # STEG 3: Publiser til gh-pages
+      # Dette steget tar hele ./docs-mappen (som nå inneholder din index.html og den genererte ./docs/api)
+      # og pusher den til roten av gh-pages-grenen.
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs # Mappen som skal publiseres til gh-pages
+          force_orphan: true # Anbefalt for å holde gh-pages ren
+          # user_name: 'github-actions[bot]' # Valgfritt, men god praksis
+          # user_email: 'github-actions[bot]@users.noreply.github.com' # Valgfritt
+          # commit_message: 'Deploy documentation to gh-pages' # Valgfritt
