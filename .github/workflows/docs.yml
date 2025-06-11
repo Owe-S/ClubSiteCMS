@@ -13,6 +13,7 @@ jobs:
     - name: Install JSDoc  
       run: npm install -g jsdoc  
     - name: Generate Docs  
-      run: jsdoc index.js -d ./docs/api  
+      run: |
+            jsdoc index.js -d ./docs cp ./docs/index.html ./docs/api/index.html  
     - name: List Generated Files  
       run: ls -R ./docs  # Verifiser at filer er opprettet  
