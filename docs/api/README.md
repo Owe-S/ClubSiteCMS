@@ -1,2 +1,0 @@
-# API-dokumentasjon  
-*Under arbeid*  
