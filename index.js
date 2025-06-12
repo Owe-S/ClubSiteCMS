@@ -7,16 +7,16 @@ import express from 'express';
 
 // Importerer rute-filene
 import newsRoutes from './routes/news.js';
-import siteSettingsRoutes from './routes/siteSettings.js'; // DENNE LINJEN ER NÅ AKTIVERT
-// import userRoutes from './routes/user.js'; // Denne venter vi med
+import siteSettingsRoutes from './routes/siteSettings.js';
+import userRoutes from './routes/user.js'; // DENNE LINJEN ER NÅ AKTIVERT
 
 const app = express();
 app.use(express.json()); // Middleware for å parse JSON-requests
 
 // Monterer (bruker) rutene
 app.use('/api/news', newsRoutes);
-app.use('/api/site/settings', siteSettingsRoutes); // DENNE LINJEN ER NÅ AKTIVERT
-// app.use('/api/user', userRoutes); // Denne venter vi med
+app.use('/api/site/settings', siteSettingsRoutes);
+app.use('/api/user', userRoutes); // DENNE LINJEN ER NÅ AKTIVERT
 
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () => {
