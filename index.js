@@ -1,31 +1,36 @@
 /**
  * Hovedapplikasjonsfil for ClubSiteCMS API.
- * Setter opp Express-serveren og monterer de ulike API-rutemodulene.
+ * Setter opp Express-serveren og forbereder montering av API-rutemoduler.
  * @module main
  */
 import express from 'express';
-import newsRoutes from './routes/news.js';
-import siteSettingsRoutes from './routes/siteSettings.js';
-import userRoutes from './routes/user.js';
+
+// Importerer rute-filene
+import newsRoutes from './routes/news.js'; // DENNE LINJEN ER NÅ AKTIVERT
+// import siteSettingsRoutes from './routes/siteSettings.js'; // Denne venter vi med
+// import userRoutes from './routes/user.js'; // Denne venter vi med
 
 const app = express();
-app.use(express.json());
+app.use(express.json()); // Middleware for å parse JSON-requests
 
-// Monter rutene
-app.use('/api/news', newsRoutes);
-app.use('/api/site/settings', siteSettingsRoutes);
-app.use('/api/user', userRoutes); // Merk: endret fra /api/user/me for å passe med en dedikert user-router
+// Monterer (bruker) rutene
+app.use('/api/news', newsRoutes); // DENNE LINJEN ER NÅ AKTIVERT
+// app.use('/api/site/settings', siteSettingsRoutes); // Denne venter vi med
+// app.use('/api/user', userRoutes); // Denne venter vi med
 
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () => {
   console.log(`Server kjører på port ${PORT}`);
 });
 
-// Kun for Codex-testing: stopp etter 10 sek
+// Denne timeouten er kun for din lokale testing med `npm start`
+// og for å unngå at serveren kjører evig under Codex-testing.
+// Den påvirker ikke GitHub Actions eller den publiserte dokumentasjonen.
 setTimeout(() => {
   server.close(() => {
-    console.log('Server stoppet automatisk');
+    console.log('Server stoppet automatisk (lokal test)');
   });
 }, 10000);
 
-export default app; // Kan være nyttig for testing
+// Eksporter 'app' kan være nyttig for fremtidig testing med verktøy som Supertest
+export default app;
