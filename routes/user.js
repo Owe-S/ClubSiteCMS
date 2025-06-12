@@ -1,45 +1,32 @@
 /**
- * Modul for API-endepunkter relatert til brukerdata.
+ * API-ruter for brukerhåndtering (foreløpig kun én eksempelrute).
  * @module routes/user
  */
 import express from 'express';
 const router = express.Router();
 
+// In-memory data for dette eksempelet
+let usersStore = [
+  { id: 1, username: 'admin', role: 'administrator' },
+  { id: 2, username: 'editor', role: 'editor' },
+];
+
 /**
- * Returnerer profilinformasjon om innlogget bruker.
- * (Dette er en mock-implementasjon. I en ekte applikasjon ville dette krevd autentisering.)
- * @name GET /me
+ * Henter en liste over brukere (forenklet eksempel).
+ * @name GET /api/user
  * @function
  * @memberof module:routes/user
  * @param {express.Request} req HTTP-forespørselen
- * @param {express.Response} res HTTP-responsen med brukerinfo
+ * @param {express.Response} res HTTP-responsen med brukerlisten
  * @returns {void}
  */
-router.get('/me', (req, res) => {
-  res.json({
-    id: 1, // Hardkodet for eksempel
-    name: 'Owe Stangeland', // Bør hentes fra autentisert bruker
-    email: 'owe.stangeland@gmail.com', // Bør hentes fra autentisert bruker
-  });
+router.get('/', (req, res) => { // Stien er '/' relativt til '/api/user'
+  res.json({ users: usersStore });
 });
 
-/**
- * Oppdaterer data for innlogget bruker.
- * (Dette er en mock-implementasjon. I en ekte applikasjon ville dette krevd autentisering.)
- * @name PUT /me
- * @function
- * @memberof module:routes/user
- * @param {express.Request} req HTTP-forespørselen med nye data
- * @param {express.Response} res HTTP-responsen med oppdatert brukerinfo
- * @returns {void}
- */
-router.put('/me', (req, res) => {
-  const user = { // I en ekte applikasjon ville du validert og lagret disse for den autentiserte brukeren
-    id: 1, // Hardkodet for eksempel
-    name: req.body.name,
-    email: req.body.email,
-  };
-  res.json({ message: 'User profile updated successfully', user });
-});
+// Her kan du legge til flere ruter for brukerhåndtering etter hvert,
+// f.eks. POST for å opprette bruker, GET /:id for å hente spesifikk bruker,
+// PUT /:id for å oppdatere, DELETE /:id for å slette, osv.
+// Husk å dokumentere dem med JSDoc!
 
 export default router;
