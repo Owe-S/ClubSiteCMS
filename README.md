@@ -27,6 +27,35 @@ Vi har nylig fullført en betydelig refaktorering og strukturering av dette API-
 *   **Automatisk Generert API-Dokumentasjon:** En GitHub Actions-workflow er satt opp for å automatisk bygge og publisere denne API-dokumentasjonen via GitHub Pages ved hver endring i `main`-branchen. Den dokumentasjonen du leser nå, er et resultat av denne prosessen.
 *   **Fullstendig Refaktorering:** Alle opprinnelige endepunkter (`/api/news`, `/api/site/settings`, `/api/user`, `/api/user/login`, `/api/gallery`, `/api/event`) er nå refaktorert og inkludert i den nye, modulære strukturen.
 
+## Prosjektfremdrift og Veikart (@Api to ClubSiteCMS)
+
+Utviklingen av ClubSiteCMS API-et styres og spores gjennom vårt dedikerte GitHub Project: **@Api to ClubSiteCMS**. For den mest oppdaterte og detaljerte oversikten over nåværende oppgaver, fremdrift, og langsiktige planer, vennligst besøk prosjekttavlen:
+
+➡️ **[Besøk @Api to ClubSiteCMS prosjekttavlen her](https://github.com/users/Owe-S/projects/1)** ⬅️
+
+Nedenfor følger en overordnet status og et veikart som skisserer de viktigste utviklingsfasene:
+
+### Nåværende Fokus
+*   *(Her kan du manuelt legge inn en kort setning om hva som er hovedfokuset i utviklingen akkurat nå. Eksempel: "Initielt oppsett av databaselag og CRUD-operasjoner for nyhetsmodulen.")*
+
+### Overordnet Veikart
+Dette veikartet er basert på de tidligere identifiserte "Trinn for å utvikle videre" og representerer hovedmålene for prosjektet:
+
+1.  **Fase 1: Kjernefunksjonalitet & CRUD**
+    *   Fullføre alle grunnleggende Create, Read, Update, Delete (CRUD) operasjoner for samtlige API-ressurser (nyheter, arrangementer, galleri, brukere, innstillinger).
+2.  **Fase 2: Datapersistens**
+    *   Migrere fra in-memory datalagring til en robust databaseløsning (f.eks. MongoDB, PostgreSQL).
+3.  **Fase 3: Sikkerhet og Validering**
+    *   Implementere sikker autentisering (JWT) og autorisasjonsmekanismer.
+    *   Innføre grundig input-validering og forbedret feilhåndtering.
+4.  **Fase 4: Testing og Kvalitetssikring**
+    *   Utvikle en omfattende testsuite med enhets- og integrasjonstester.
+5.  **Fase 5: Forberedelse for Frontend**
+    *   Sikre at API-et er klart og optimalisert for integrasjon med en frontend-applikasjon.
+    *   Vurdere og implementere ytterligere funksjoner som paginering, filtrering, og sortering der det er relevant.
+
+*(Denne oversikten vil bli oppdatert periodisk for å reflektere prosjektets fremgang. Den detaljerte dag-til-dag oppgavestyringen og spesifikke tidslinjer finnes på GitHub Project-tavlen.)*
+
 ## Trinn for å utvikle videre
 
 Med det nåværende solide fundamentet på plass, er her noen foreslåtte neste steg for videre utvikling av ClubSiteCMS:
