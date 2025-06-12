@@ -10,7 +10,7 @@ import newsRoutes from './routes/news.js';
 import siteSettingsRoutes from './routes/siteSettings.js';
 import userRoutes from './routes/user.js';
 import galleryRoutes from './routes/gallery.js';
-import eventRoutes from './routes/event.js'; // NY LINJE
+import eventRoutes from './routes/events.js'; // NY LINJE
 
 const app = express();
 app.use(express.json()); // Middleware for å parse JSON-requests
