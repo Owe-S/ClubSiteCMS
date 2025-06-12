@@ -9,7 +9,8 @@ import express from 'express';
 import newsRoutes from './routes/news.js';
 import siteSettingsRoutes from './routes/siteSettings.js';
 import userRoutes from './routes/user.js';
-import galleryRoutes from './routes/gallery.js'; // NY LINJE
+import galleryRoutes from './routes/gallery.js';
+import eventRoutes from './routes/event.js'; // NY LINJE
 
 const app = express();
 app.use(express.json()); // Middleware for å parse JSON-requests
@@ -18,8 +19,8 @@ app.use(express.json()); // Middleware for å parse JSON-requests
 app.use('/api/news', newsRoutes);
 app.use('/api/site/settings', siteSettingsRoutes);
 app.use('/api/user', userRoutes);
-app.use('/api/gallery', galleryRoutes); // NY LINJE
-// app.use('/api/event', eventRoutes); // Denne venter vi med
+app.use('/api/gallery', galleryRoutes);
+app.use('/api/event', eventRoutes); // DENNE LINJEN ER NÅ AKTIVERT
 
 const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () => {
